@@ -1,0 +1,53 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ljs.batch.mapper.BoardMapper">
+
+    <resultMap id="Board" type="com.ljs.batch.domain.Board"/>
+
+    <select id="selectBoards" resultMap="Board">
+        SELECT *
+          FROM BOARD
+    </select>
+
+    <insert id="insertBoard" useGeneratedKeys="true" keyProperty="bno">
+        INSERT INTO BOARD (
+               title
+             , content
+             , writer)
+        VALUES (
+               #{title}
+             , #{content}
+             , #{writer}
+               )
+    </insert>
+
+    <insert id="insertBoards">
+        INSERT INTO BOARD (
+               title
+             , content
+             , writer)
+        VALUES
+        <foreach item="item" collection="list" separator=",">
+              (
+               #{item.title}
+             , #{item.content}
+             , #{item.writer}
+               )
+        </foreach>
+    </insert>
+
+    <update id="updateBoards">
+        <foreach item="item" collection="list" separator=";">
+        UPDATE BOARD SET
+               title = #{item.title}
+             , content = #{item.content}
+             , writer = #{item.writer}
+         WHERE bno = #{item.bno}
+        </foreach>
+    </update>
+
+    <delete id="deleteBoard">
+        DELETE FROM BOARD
+         WHERE bno = #{bno}
+    </delete>
+
+</mapper>
